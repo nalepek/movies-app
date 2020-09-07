@@ -1,0 +1,7 @@
+<figure *ngIf="movie">
+  <img
+      class="float-left mr-3 about-img"
+      [src]="movie.posterPath"
+  />
+</figure>
+<p>{{ movie.overview }}</p>

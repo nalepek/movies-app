@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.scrollable {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.mh-85 {
+    max-height: 85vh;
+}
