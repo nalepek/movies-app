@@ -1,10 +1,9 @@
-export interface Movie {
+export interface MovieDetails {
     id: number;
-    title: string;
     originalTitle: string;
-    originalLanguage: string;
     overview: string;
     popularity: number;
     posterPath: string;
+    title: string;
     voteAverage: number;
 }

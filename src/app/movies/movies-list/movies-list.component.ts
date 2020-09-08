@@ -1,8 +1,11 @@
-import { DataService } from './../../services/data.service';
+import { FetchPopularMovies, FetchMovieDetails } from './../../store/actions/movie.actions';
+import { getMovies, getLoading, getMovieDetails } from './../../store/selectors/movie.selector';
 import { Component, OnInit } from '@angular/core';
 import { MovieResponse } from '../shared/movie-response';
 import { Movie } from '../shared/movie';
-import { MovieService } from 'src/app/services/movie/movie.service';
+import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { MovieDetails } from '../shared/movie-details';
 
 @Component({
   selector: 'app-movies-list',
@@ -11,27 +14,34 @@ import { MovieService } from 'src/app/services/movie/movie.service';
 })
 export class MoviesListComponent implements OnInit {
 
-  movies: MovieResponse;
+  selectedMovie = {} as MovieDetails;
+  
+  public movies$: Observable<MovieResponse> = this.store.pipe(
+    select(getMovies),
+  );
 
-  selectedMovie = {} as Movie;
+  public loading$: Observable<boolean> = this.store.pipe(
+    select(getLoading)
+  );
 
-  constructor(private movieService: MovieService,
-              private dataService: DataService) { }
+  public selectedMovie$: Observable<MovieDetails> = this.store.pipe(
+    select(getMovieDetails)
+  );
 
-  ngOnInit() {
-    this.getPopularMovies(1);
+  constructor(private store: Store) {
   }
 
-  getPopularMovies(page?: number): void {
-    this.movieService.getPopularMovies(page)
-      .subscribe((movies: MovieResponse) => {
-        this.movies = movies;
-      });
+  ngOnInit() {
+    this.fetchPopularMovies(1);
+
+    this.selectedMovie$.subscribe((res) => this.selectedMovie = res);
   }
 
   onSelect(movie: Movie): void {
-    this.selectedMovie = movie;
+    this.store.dispatch(new FetchMovieDetails(movie.id, movie));
+  }
 
-    this.dataService.nextData(movie);
+  fetchPopularMovies(page: number): void {
+    this.store.dispatch(new FetchPopularMovies(page));
   }
 }

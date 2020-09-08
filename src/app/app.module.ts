@@ -14,6 +14,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+
+import { reducers } from './store/reducers';
+import { effects } from './store/effects';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +40,9 @@ import { ToastrModule } from 'ngx-toastr';
       closeButton: true,
       progressBar: true
     }),
-    PaginationModule
+    PaginationModule,
+    StoreModule.forRoot(reducers, { runtimeChecks: { strictStateImmutability: true, strictActionImmutability: true } }),
+    EffectsModule.forRoot(effects),
   ],
   providers: [
     {

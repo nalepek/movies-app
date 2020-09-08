@@ -1,6 +1,8 @@
-import { DataService } from './../../services/data.service';
-import { Movie } from 'src/app/movies/shared/movie';
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { MovieDetails } from '../shared/movie-details';
+import { Store, select } from '@ngrx/store';
+import { getMovieDetails } from './../../store/selectors/movie.selector';
 
 @Component({
   selector: 'app-movie-details',
@@ -9,12 +11,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MovieDetailsComponent implements OnInit {
 
-  movie = {} as  Movie;
+  selectedMovie = {} as MovieDetails;
 
-  constructor(private dataService: DataService) { }
+  public selectedMovie$: Observable<MovieDetails> = this.store.pipe(
+    select(getMovieDetails)
+  );
+  
+  constructor(private store: Store) {
+   }
 
   ngOnInit() {
-    this.dataService.currentData.subscribe(data => this.movie = data as Movie);
+    this.selectedMovie$.subscribe((res) => this.selectedMovie = res);
   }
 
 }

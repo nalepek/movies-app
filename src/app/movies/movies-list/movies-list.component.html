@@ -1,15 +1,18 @@
-<ul class="list-group" *ngIf="movies">
-    <li
-        class="list-group-item"
-        *ngFor="let movie of movies.results"
-        (click)="onSelect(movie)"
-        [ngClass]="[selectedMovie.id == movie.id ? 'active' : '']"
-    >
-        {{ movie.title }}
-    </li>
-</ul>
-<app-pagination
-    [page]="movies?.page"
-    [collectionSize]="movies?.totalResults"
-    (pageChange)="getPopularMovies($event)"
-></app-pagination>
+<p *ngIf="loading$ | async">Loading</p>
+<div *ngIf="movies$ | async as movies">
+    <ul class="list-group">
+        <li
+            class="list-group-item"
+            *ngFor="let movie of movies.results"
+            (click)="onSelect(movie)"
+            [ngClass]="[selectedMovie?.id == movie.id ? 'active' : '']"
+        >
+            {{ movie.title }}
+        </li>
+    </ul>
+    <app-pagination
+        [page]="movies?.page"
+        [collectionSize]="movies?.totalResults"
+        (pageChange)="fetchPopularMovies($event)"
+    ></app-pagination>
+</div>

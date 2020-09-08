@@ -26,7 +26,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                     }
                     
                     this.loggingService.logError(errorMessage);
-                    // window.alert(errorMessage);
                     return throwError(errorMessage);
                 })
             );
